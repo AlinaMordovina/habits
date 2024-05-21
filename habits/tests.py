@@ -29,16 +29,16 @@ class HabitTestCase(APITestCase):
 
         response = self.client.post(url, data)
 
-        self.assertEquals(response.status_code, status.HTTP_201_CREATED)
-        self.assertEquals(Habit.objects.all().count(), 2)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Habit.objects.all().count(), 2)
 
     def test_list_habit(self):
         url = reverse('habits:habit_list')
 
         response = self.client.get(url)
 
-        self.assertEquals(response.status_code, status.HTTP_200_OK)
-        self.assertEquals(
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
             response.json(),
             {
                 'count': 1,
@@ -48,17 +48,16 @@ class HabitTestCase(APITestCase):
                     [
                         {
                             'id': self.habit.id,
+                            'owner': self.user.pk,
                             'place': 'test_place',
                             'time': self.habit.time,
-                            'date': self.habit.date,
                             'action': 'test_action',
-                            'is_pleasant': self.habit.is_pleasant,
+                            'is_nice_habit': self.habit.is_nice_habit,
+                            'related_habit': self.habit.related_habit,
+                            'request_period': self.habit.request_period,
                             'reward': self.habit.reward,
                             'duration': self.habit.duration,
-                            'periodicity': self.habit.periodicity,
                             'is_public': self.habit.is_public,
-                            'owner': self.user.pk,
-                            'related_habit': self.habit.related_habit
                         }
                     ]
             }
@@ -73,22 +72,21 @@ class HabitTestCase(APITestCase):
         response = self.client.patch(url, data)
         data = response.json()
 
-        self.assertEquals(response.status_code, status.HTTP_200_OK)
-        self.assertEquals(
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
             data,
             {
                 'id': self.habit.id,
+                'owner': self.user.pk,
                 'place': 'place_update',
                 'time': self.habit.time,
-                'date': self.habit.date,
                 'action': 'action_update',
-                'is_pleasant': self.habit.is_pleasant,
+                'is_nice_habit': self.habit.is_nice_habit,
+                'related_habit': self.habit.related_habit,
+                'request_period': self.habit.request_period,
                 'reward': self.habit.reward,
                 'duration': self.habit.duration,
-                'periodicity': self.habit.periodicity,
                 'is_public': self.habit.is_public,
-                'owner': self.user.pk,
-                'related_habit': self.habit.related_habit
             }
         )
 
@@ -102,7 +100,7 @@ class HabitTestCase(APITestCase):
         }
         response = self.client.post(url, data)
 
-        self.assertEquals(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_request_period_habit(self):
         url = reverse('habits:habit_create')
@@ -114,7 +112,7 @@ class HabitTestCase(APITestCase):
         }
         response = self.client.post(url, data)
 
-        self.assertEquals(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_reward_and_is_nice_habit(self):
         url = reverse('habits:habit_create')
@@ -127,4 +125,4 @@ class HabitTestCase(APITestCase):
         }
         response = self.client.post(url, data)
 
-        self.assertEquals(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
