@@ -67,6 +67,11 @@ python3 manage.py migrate
 - Swagger http://127.0.0.1:8000/docs/
 - Redoc http://127.0.0.1:8000/redoc/
 
+12. Для запуска проекта через Docker необходимо выполнить команды:
+
+docker compose build - сборка образа
+docker compose up - запуск контейнера
+
 
 
 
